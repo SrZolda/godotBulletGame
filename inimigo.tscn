@@ -1,0 +1,261 @@
+[gd_scene load_steps=11 format=3 uid="uid://gb15yapsbqhj"]
+
+[sub_resource type="GDScript" id="GDScript_mgd87"]
+script/source = "extends CharacterBody2D
+
+@onready var attack_area = $AttackArea  
+@onready var position2d: Marker2D = $Marker2D
+@onready var target = $\"../Player\"
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+var speed = 70
+var life = 50  # Enemy's health
+var attack_range = 200
+
+
+func take_damage(amount: int):
+	life -= amount
+	if life <= 0:
+		die()
+
+func die():
+	print(\"Enemy is dead!\")
+	queue_free()
+
+func _physics_process(delta: float) -> void:
+	# Verifica se o jogador é válido
+	if target and target.is_inside_tree():
+		var distance_to_target = position.distance_to(target.position)
+
+		# Move apenas se estiver fora do alcance de ataque
+		if distance_to_target > attack_range:
+			var direction = (target.position - position).normalized()
+			velocity.x = direction.x * speed
+			animation_player.play(\"idle\")
+			# Ajusta a direção visual do inimigo
+			position2d.scale.x = direction.x*-1
+		else:
+			var direction = (target.position - position).normalized()
+			
+			animation_player.play(\"attack\")
+			
+
+		# Movimenta o inimigo
+		move_and_slide()
+	else:
+		velocity = Vector2.ZERO  # Para de se mover caso o jogador não exista
+
+
+
+
+func _on_attacker_area_body_entered(body):
+	
+	if body.has_method(\"take_damage\"):
+		body.take_damage(10)  # Damage the player
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lt5sn"]
+radius = 19.2372
+height = 98.2281
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p8bwt"]
+load_path = "res://.godot/imported/enemies.png-54f6dd22fa36905f43103a80b3460952.ctex"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p6yay"]
+size = Vector2(21.5799, 114.825)
+
+[sub_resource type="Animation" id="Animation_vtgpx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Marker2D/Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Marker2D/AttackerArea:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_02iwe"]
+resource_name = "attack"
+length = 0.83335
+loop_mode = 1
+step = 0.166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Marker2D/Sprite2D:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.333333, 0.5, 0.666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(0, 1), Vector2i(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Marker2D/AttackerArea:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_dy8fl"]
+resource_name = "idle"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Marker2D/Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_uw24x"]
+resource_name = "jump"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_1dp8l"]
+resource_name = "walk"
+length = 0.902
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.46),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cwvuu"]
+_data = {
+"RESET": SubResource("Animation_vtgpx"),
+"attack": SubResource("Animation_02iwe"),
+"idle": SubResource("Animation_dy8fl"),
+"jump": SubResource("Animation_uw24x"),
+"walk": SubResource("Animation_1dp8l")
+}
+
+[node name="inimigo" type="CharacterBody2D"]
+position = Vector2(575, 328)
+collision_layer = 2
+collision_mask = 2
+script = SubResource("GDScript_mgd87")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -17)
+scale = Vector2(4.1586, 2.62654)
+shape = SubResource("CapsuleShape2D_lt5sn")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Marker2D"]
+texture_filter = 1
+position = Vector2(-241, -190)
+scale = Vector2(3, 3)
+texture = SubResource("CompressedTexture2D_p8bwt")
+centered = false
+offset = Vector2(-52, -27.3333)
+hframes = 3
+vframes = 2
+
+[node name="AttackerArea" type="Area2D" parent="Marker2D"]
+position = Vector2(-192, -1)
+scale = Vector2(0.853936, 1)
+collision_layer = 2
+monitoring = false
+
+[node name="collsiion" type="CollisionShape2D" parent="Marker2D/AttackerArea"]
+position = Vector2(-2.5, -26.5)
+scale = Vector2(17.1919, 2.36011)
+shape = SubResource("RectangleShape2D_p6yay")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-2, -2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cwvuu")
+}
+autoplay = "idle"
+
+[connection signal="body_entered" from="Marker2D/AttackerArea" to="." method="_on_attacker_area_body_entered"]
