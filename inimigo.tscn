@@ -58,7 +58,6 @@ radius = 19.2372
 height = 98.2281
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p8bwt"]
-load_path = "res://.godot/imported/enemies.png-54f6dd22fa36905f43103a80b3460952.ctex"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p6yay"]
 size = Vector2(21.5799, 114.825)

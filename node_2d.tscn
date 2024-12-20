@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://b2txrrmmoscnc"]
 
 [ext_resource type="Script" path="res://movimento.gd" id="1_6d37p"]
+[ext_resource type="Texture2D" uid="uid://cov6wqdv80xcv" path="res://Personagem_Teste.png" id="2_cu20d"]
 [ext_resource type="Texture2D" uid="uid://dlh8e7ojcbm1m" path="res://sprite.jpg" id="2_gmp2a"]
-[ext_resource type="Texture2D" uid="uid://buitv0g6c2pvf" path="res://Personagem_Teste.webp" id="2_ra761"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lt5sn"]
 radius = 8.17584
@@ -46,10 +46,22 @@ tracks/0/path = NodePath("Marker2D/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Marker2D/Sprite2D:frame_coords")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [Vector2i(0, 3)]
 }
 
 [sub_resource type="Animation" id="Animation_dy8fl"]
@@ -87,9 +99,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_1dp8l"]
 resource_name = "walk"
-length = 0.8
+length = 0.500013
 loop_mode = 1
-step = 0.166667
+step = 0.125
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -97,10 +109,10 @@ tracks/0/path = NodePath("Marker2D/Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0550843, 0.156599, 0.256401, 0.36621, 0.472969, 0.579728, 0.686487),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1)]
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cwvuu"]
@@ -134,9 +146,9 @@ scale = Vector2(-1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Player/Marker2D"]
 texture_filter = 1
-position = Vector2(-138, 18)
-scale = Vector2(3, 3)
-texture = ExtResource("2_ra761")
+position = Vector2(-102.402, -30.6504)
+scale = Vector2(1.22009, 1.22009)
+texture = ExtResource("2_cu20d")
 centered = false
 offset = Vector2(20, -27.333)
 hframes = 8
